@@ -15,9 +15,11 @@ Most of these requirements can be installed through the standard method for the 
 
 ### Install skill virtualenv
 
+```
 git clone http://github.com/forslund/mycroft-media-skills.git
 cd mycroft_media_skills
 ./setup_skill_container
+```
 
 ### Mopidy Setup
 
@@ -58,10 +60,11 @@ mopidy_url = http://localhost:6680
 
 ## Launch the media skills
 
+```
 workon mycroft-media-skills
 
 ./start.sh
-
+```
 
 ## The example skills
 **Swedish Radio**
