@@ -21,7 +21,7 @@ class LocalMusic(MediaSkill):
         self.tracks = None
         self.mopidy = mopidy.Mopidy('http://localhost:6680')
         p = self.mopidy.browse('local:directory?type=album')
-        self.playlist = {e['name'] : e for e in p if e['type'] == 'album'}
+        self.playlist = {e['name']: e for e in p if e['type'] == 'album'}
 
     def initialize(self):
         logger.info('initializing Local Music skill')
@@ -100,12 +100,11 @@ class LocalMusic(MediaSkill):
             time.sleep(1)
             if 'album' in current_track:
                 data = {'current_track': current_track['name'],
-                    'artist': current_track['album']['artists'][0]['name']}
+                        'artist': current_track['album']['artists'][0]['name']}
                 self.speak_dialog('currently_playing', data)
             time.sleep(6)
             self.mopidy.restore_volume()
 
- 
+
 def create_skill():
     return LocalMusic()
-

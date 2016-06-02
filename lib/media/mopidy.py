@@ -6,6 +6,7 @@ MOPIDY_API = '/mopidy/rpc'
 
 _base_dict = {'jsonrpc': '2.0', 'id': 1, 'params': {}}
 
+
 class Mopidy():
     def __init__(self, url):
         self.is_playing = False
@@ -43,14 +44,14 @@ class Mopidy():
     def find_exact(self, uris='null'):
         d = copy(_base_dict)
         d['method'] = 'core.library.find_exact'
-        d['params'] = {'uris' : uris}
+        d['params'] = {'uris': uris}
         r = requests.post(self.url, data=json.dumps(d))
         return r.json()
 
     def browse(self, uri):
         d = copy(_base_dict)
         d['method'] = 'core.library.browse'
-        d['params'] = {'uri' : uri}
+        d['params'] = {'uri': uri}
         r = requests.post(self.url, data=json.dumps(d))
         if 'result' in r.json():
             return r.json()['result']
@@ -81,7 +82,6 @@ class Mopidy():
         d = copy(_base_dict)
         d['method'] = 'core.playback.play'
         r = requests.post(self.url, data=json.dumps(d))
-        r = requests.post(self.url, data='{"jsonrpc": "2.0", "id": 1, "method": "core.playback.play"}')
 
     def next(self):
         if self.is_playing:
@@ -111,14 +111,14 @@ class Mopidy():
             return r.json()['result']
         else:
             return None
-    
+
     def set_volume(self, percent):
         if self.is_playing:
             d = copy(_base_dict)
             d['method'] = 'core.mixer.set_volume'
-            d['params'] = {'volume' : percent}
+            d['params'] = {'volume': percent}
             r = requests.post(self.url, data=json.dumps(d))
-        
+
     def lower_volume(self):
         d = copy(_base_dict)
         d['method'] = 'core.mixer.get_volume'
@@ -128,4 +128,4 @@ class Mopidy():
 
     def restore_volume(self):
         if self.volume is not None and self.is_playing:
-            self.set_volume(self.volume) 
+            self.set_volume(self.volume)

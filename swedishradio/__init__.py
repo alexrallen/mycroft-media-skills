@@ -79,4 +79,3 @@ class SwedishRadio(MediaSkill):
 
 def create_skill():
     return SwedishRadio()
-

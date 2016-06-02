@@ -21,7 +21,9 @@ class Spotify(MediaSkill):
         self.tracks = None
         self.mopidy = mopidy.Mopidy(self.config['mopidy_url'])
         p = self.mopidy.get_playlists('spotify')
-        self.playlist = {e['name'].split('(by')[0].strip().lower() : e for e in p}
+        self.playlist = {
+            e['name'].split('(by')[0].strip().lower(): e for e in p
+        }
 
     def initialize(self):
         logger.info('initializing Spotify skill')
@@ -92,7 +94,7 @@ class Spotify(MediaSkill):
         else:
             name = message.metadata.get('Source') + ' ' + fr + ' ' + skill
             self.tracks = self.get_available(name)
-            if self.tracks != None:
+            if self.tracks is not None:
                 self.play()
 
     def handle_stop(self, message=None):
@@ -125,4 +127,3 @@ class Spotify(MediaSkill):
 
 def create_skill():
     return Spotify()
-
