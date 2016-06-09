@@ -51,10 +51,7 @@ after this is done scan the local collection by running
 Mycroft needs to be pointed to the mopidy server. Add the following to `~/.mycroft/mycroft.ini` for a local mopidy server at the defualt port:
 
 ```
-[Spotify]
-mopidy_url = http://localhost:6680
-
-[Local Music]
+[Media]
 mopidy_url = http://localhost:6680
 ```
 

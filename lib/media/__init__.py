@@ -4,6 +4,7 @@ from adapt.intent import IntentBuilder
 from mycroft.skills import time_rules
 from mycroft.skills.core import MycroftSkill
 from mycroft.messagebus.message import Message
+from mycroft.configuration.config import ConfigurationManager
 
 from mycroft.util.log import getLogger
 import mopidy
@@ -17,7 +18,8 @@ class MediaSkill(MycroftSkill):
     def __init__(self, name):
         super(MediaSkill, self).__init__(name)
         self.isPlaying = False
-        # TODO load config
+        config = ConfigurationManager.get_config()
+        self.base_conf = config.get('Media')
 
     def initialize(self):
         logger.info('Initializing MediaSkill commons')
