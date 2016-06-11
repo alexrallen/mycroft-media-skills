@@ -11,7 +11,11 @@ These media skills currently requires some external software to work.
 - mopidy-spotify
 - mopidy-local-mysql
 
-Most of these requirements can be installed through the standard method for the OS. The exception is libspotify that must be retrieved from spotify.
+Most of these requirements can be installed through the standard method for the OS. The exception is libspotify that must be retrieved from spotify. For convenience the required software can be installed for debian based distros by running the command
+
+```sh
+  sudo ./dev_setup_debian.sh
+```
 
 ### Install skill virtualenv
 
