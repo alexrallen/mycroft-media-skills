@@ -14,9 +14,17 @@ These media skills currently requires some external software to work.
 Most of these requirements can be installed through the standard method for the OS. The exception is libspotify that must be retrieved from spotify. For convenience the required software can be installed for debian based distros by running the command
 
 ```sh
-  sudo ./dev_setup_debian.sh
+  sudo ./dev-setup-debian.sh
 ```
 
+and for red hat based distros 
+
+```
+  sudo ./dev-setup-redhat.sh
+  ```
+  
+  should work.
+  
 ### Install skill virtualenv
 
 ```
