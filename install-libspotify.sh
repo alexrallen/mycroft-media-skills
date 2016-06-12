@@ -23,7 +23,7 @@ case $ARCH in
 esac
 if [ $URL != "" ] ; then
     EXTRACTED=`echo $URL | sed 's,^[^ ]*/,,' | sed 's,\.tar\.gz,,'`
-    wget $URL -o $TMP_DIR/libspotify.tar.gz
+    wget $URL -O $TMP_DIR/libspotify.tar.gz
     cd $TMP_DIR
     tar -xvzf libspotify.tar.gz
     cd $EXTRACTED
