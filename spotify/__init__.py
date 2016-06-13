@@ -19,10 +19,12 @@ class Spotify(MediaSkill):
     def __init__(self):
         super(Spotify, self).__init__('Spotify')
         self.tracks = None
-        try:
-            self.mopidy = mopidy.Mopidy(self.config['mopidy_url'])
-        except:
-            self.mopidy = mopidy.Mopidy(self.base_conf['mopidy_url'])
+
+        url = self.base_conf.get('mopidy_url', None)
+        if self.config:
+            url = self.config.get('mopidy_url', url)
+        self.mopidy = mopidy.Mopidy(url)
+
         p = self.mopidy.get_playlists('spotify')
         self.playlist = {
             e['name'].split('(by')[0].strip().lower(): e for e in p

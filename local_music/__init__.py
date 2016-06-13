@@ -19,10 +19,11 @@ class LocalMusic(MediaSkill):
     def __init__(self):
         super(LocalMusic, self).__init__('Local Music')
         self.tracks = None
-        try:
-            self.mopidy = mopidy.Mopidy(self.conf['mopidy_url'])
-        except:
-            self.mopidy = mopidy.Mopidy(self.base_conf['mopidy_url'])
+
+        url = self.base_conf.get('mopidy_url', None)
+        if self.config:
+            url = self.config.get('mopidy_url', url)
+        self.mopidy = mopidy.Mopidy(url)
 
         p = self.mopidy.browse('local:directory?type=album')
         self.playlist = {e['name']: e for e in p if e['type'] == 'album'}
