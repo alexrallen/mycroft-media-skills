@@ -35,7 +35,7 @@ class GMusic(MediaSkill):
         logger.info(self.playlist)
 
     def initialize(self):
-        logger.info('initializing Local Music skill')
+        logger.info('initializing Google Music skill')
         super(GMusic, self).initialize()
         self.load_data_files(dirname(__file__))
 
@@ -75,8 +75,6 @@ class GMusic(MediaSkill):
             directory = self.playlists[directory]
         logger.info(directory)
         tracks = self.mopidy.browse(directory['uri'])
-        logger.info("TRACKS:")
-        logger.info(tracks)
         track_uris = [t['uri'] for t in tracks if t['type'] == 'track']
         self.tracks = track_uris
         logger.info('found tracks: ' + str(self.tracks))
