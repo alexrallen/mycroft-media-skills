@@ -31,7 +31,7 @@ class GMusic(MediaSkill):
 
         p = self.mopidy.browse('gmusic:album')
         p = {e['name']: e for e in p if e['type'] == 'directory'}
-        self.playlist = {e.split(' - ')[1] :p[e] for e in p}
+        self.playlist = {e.split(' - ')[1]: p[e] for e in p}
         logger.info(self.playlist)
 
     def initialize(self):
