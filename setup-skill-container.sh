@@ -19,6 +19,5 @@ fi
 source ${VIRTUALENV_ROOT}/bin/activate
 cd ${TOP}
 
-pip install mycroft_skills_sdk --extra-index-url=http://pypi.mycroft.team --trusted-host pypi.mycroft.team
-
 pip install -r requirements.txt
+pip install mycroft_skills_sdk --extra-index-url=http://pypi.mycroft.team --trusted-host pypi.mycroft.team
