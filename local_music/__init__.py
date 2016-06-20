@@ -26,7 +26,12 @@ class LocalMusic(MediaSkill):
         self.mopidy = mopidy.Mopidy(url)
 
         p = self.mopidy.browse('local:directory?type=album')
-        self.playlist = {e['name']: e for e in p if e['type'] == 'album'}
+        albums = {e['name']: e for e in p if e['type'] == 'album'}
+        p = self.mopidy.browse('local:directory?type=artist')
+        artist = {e['name']: e for e in p if e['type'] == 'artist'}
+        self.playlist = {}
+        self.playlist.update(artist)
+        self.playlist.update(albums)
 
     def initialize(self):
         logger.info('initializing Local Music skill')
