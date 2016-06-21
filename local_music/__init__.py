@@ -29,7 +29,11 @@ class LocalMusic(MediaSkill):
         albums = {e['name']: e for e in p if e['type'] == 'album'}
         p = self.mopidy.browse('local:directory?type=artist')
         artist = {e['name']: e for e in p if e['type'] == 'artist'}
+        p = self.mopidy.browse('local:directory?type=genre')
+        genre = {e['name']: e for e in p if e['type'] == 'directory'}
+        logger.debug(p)
         self.playlist = {}
+        self.playlist.update(genre)
         self.playlist.update(artist)
         self.playlist.update(albums)
 
