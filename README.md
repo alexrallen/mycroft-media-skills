@@ -72,7 +72,7 @@ mopidy_url = http://localhost:6680
 ```
 workon mycroft-media-skills
 
-./start.sh
+./media-skills.sh start
 ```
 
 ## The example skills
