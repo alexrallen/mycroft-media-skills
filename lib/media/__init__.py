@@ -41,7 +41,12 @@ class MediaSkill(MycroftSkill):
         intent = IntentBuilder('CurrentlyPlayingIntent')\
             .require('CurrentlyPlayingKeyword')
         self.register_intent(intent, self.handle_currently_playing)
+
         self.emitter.on('mycroft.media.stop', self.handle_stop)
+        logger.info("REGISTERING 'speak'")
+        self.emitter.on('speak', self.lower_volume)
+        logger.info("REGISTERING 'stop speak'")
+        self.emitter.on('recognizer_loop:audio_output_end', self.restore_volume)
 
     def handle_next(self, message):
         logger.info('handle_next not implemented')
@@ -67,6 +72,11 @@ class MediaSkill(MycroftSkill):
     def stop(self):
         logger.debug('No stop method implemented')
 
+    def lower_volume(self, message):
+        logger.debug('Lower volume not implemented')
+
+    def restore_volume(self, message):
+        logger.debug('Restore volume not implemented')
     def _set_sink(self, message):
         """ Selects the output device """
         pass
