@@ -31,7 +31,16 @@ class GMusic(MediaSkill):
 
         p = self.mopidy.browse('gmusic:album')
         p = {e['name']: e for e in p if e['type'] == 'directory'}
-        self.playlist = {e.split(' - ')[1]: p[e] for e in p}
+        albums = {e.split(' - ')[1]: p[e] for e in p}
+        p = self.mopidy.browse('gmusic:artist')
+        artists = {e['name']: e for e in p if e['type'] == 'directory'}
+        p = self.mopidy.browse('gmusic:radio')
+        radio = {e['name']: e for e in p if e['type'] == 'directory'}
+
+        self.playlist = {}
+        self.playlist.update(radio)
+        self.playlist.update(artists)
+        self.playlist.update(albums)
         logger.info(self.playlist)
 
     def initialize(self):
@@ -69,21 +78,23 @@ class GMusic(MediaSkill):
             tracks = self.playlist[name]
         return tracks
 
-    def prepare(self, directory):
-        logger.info("Directory is: " + directory['uri'])
-        if directory is str:
-            directory = self.playlists[directory]
-        logger.info(directory)
-        tracks = self.mopidy.browse(directory['uri'])
-        track_uris = [t['uri'] for t in tracks if t['type'] == 'track']
-        self.tracks = track_uris
+    def get_playlist(self, uri):
+        tracks = self.mopidy.browse(uri)
+        logger.info("uri:")
+        logger.info(tracks)
+        ret = [t['uri'] for t in tracks if t['type'] == 'track']
+
+        sub_tracks = [t['uri'] for t in tracks if t['type'] != 'track']
+        for t in sub_tracks:
+            ret = ret + self.get_playlist(t)
         logger.info('found tracks: ' + str(self.tracks))
+        return ret
 
     def handle_play_playlist(self, message):
         p = message.metadata.get('PlaylistKeyword' + self.name)
         self.speak("Playing " + str(p))
         time.sleep(3)
-        self.prepare(self.playlist[p])
+        self.tracks = self.get_playlist(self.playlist[p]['uri'])
         self.play()
 
     def handle_stop(self, message=None):
