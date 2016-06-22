@@ -6,9 +6,9 @@ function usage {
   echo
   echo "usage: $0 [-h] (start|stop|restart)"
   echo "      -h             this help message"
-  echo "      start          starts mycroft-service, mycroft-skills and mycroft-voice"
-  echo "      stop           stops mycroft-service, mycroft-skills and mycroft-voice"
-  echo "      restart        restarts mycroft-service, mycroft-skills and mycroft-voice"
+  echo "      start          starts mopidy and the media skills"
+  echo "      stop           stops media skills and mopidy"
+  echo "      restart        restarts mopidy and media skills"
   echo
   echo "screen tips:"
   echo "            run 'screen -list' to see all running screens"
