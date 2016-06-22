@@ -91,6 +91,12 @@ examples:
 `play hello nasty from spotify`
 
 **local music**
-- the local music skill browses the local media directory and adds each album found as a play intent.
+- the local music skill browses the local media directory and adds each artist, album and genre found as a play intent.
 
+examples:
 
+`play Armikrog OST`
+
+`play something by Terry Scott Taylor`
+
+`play rock music`
