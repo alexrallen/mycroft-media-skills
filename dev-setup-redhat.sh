@@ -39,3 +39,4 @@ yum install -y python-gstreamer1 gstreamer1-plugins-good gstreamer1-plugins-ugly
 
 /usr/local/bin/pip2.7 install -U mopidy-local-sqlite
 
+/usr/local/bin/pip2.7 install -U mopidy-gmusic

@@ -26,12 +26,14 @@ function start-media-skills {
   screen -mdS media-skills-spotify mycroft-skill-container ./spotify
   screen -mdS media-skills-local-music mycroft-skill-container ./local_music
   screen -mdS media-skills-swedish-radio mycroft-skill-container ./swedishradio
+  screen -mdS media-skills-gmusic mycroft-skill-container ./gmusic
 }
 
 function stop-media-skills {
   screen -XS media-skills-spotify quit
   screen -XS media-skills-local-music quit
   screen -XS media-skills-swedish-radio quit
+  screen -XS media-skills-gmusic quit
   screen -XS media-skills-mopidy quit
 }
 
