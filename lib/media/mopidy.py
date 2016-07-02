@@ -13,6 +13,8 @@ class Mopidy():
         self.url = url + MOPIDY_API
         self.volume = None
         self.clear_list(force=True)
+        self.volume_low = 10
+        self.volume_high = 100
 
     def find_artist(self, artist):
         d = copy(_base_dict)
@@ -120,12 +122,19 @@ class Mopidy():
             r = requests.post(self.url, data=json.dumps(d))
 
     def lower_volume(self):
-        d = copy(_base_dict)
-        d['method'] = 'core.mixer.get_volume'
-        r = requests.post(self.url, data=json.dumps(d))
-        self.volume = r.json()['result']
-        self.set_volume(20)
+        self.set_volume(self.volume_low)
 
     def restore_volume(self):
-        if self.volume is not None and self.is_playing:
-            self.set_volume(self.volume)
+        self.set_volume(self.volume_high)
+
+    def pause(self):
+        if self.is_playing:
+            d = copy(_base_dict)
+            d['method'] = 'core.playback.pause'
+            r = requests.post(self.url, data=json.dumps(d))
+
+    def resume(self):
+        if self.is_playing:
+            d = copy(_base_dict)
+            d['method'] = 'core.playback.resume'
+            r = requests.post(self.url, data=json.dumps(d))
