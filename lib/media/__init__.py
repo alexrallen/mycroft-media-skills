@@ -54,6 +54,12 @@ class MediaSkill(MycroftSkill):
         intent = IntentBuilder('StopIntent').require('StopKeyword')
         self.register_intent(intent, self.handle_stop)
 
+        intent = IntentBuilder('PauseIntent').require('PauseKeyword')
+        self.register_intent(intent, self.handle_pause)
+
+        intent = IntentBuilder('ResumeIntent').require('ResumeKeyword')
+        self.register_intent(intent, self.handle_resume)
+
         intent = IntentBuilder('CurrentlyPlayingIntent')\
             .require('CurrentlyPlayingKeyword')
         self.register_intent(intent, self.handle_currently_playing)
@@ -98,6 +104,10 @@ class MediaSkill(MycroftSkill):
     def handle_pause(self, message):
         """ handle_pause() should pause currently playing media """
         logger.info('handle_pause not implemented')
+
+    def handle_resume(self, message):
+        """ handle_resume() should resume paused media """
+        logger.info('handle_resume not implemented')
 
     def handle_stop(self, message):
         """

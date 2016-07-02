@@ -126,3 +126,15 @@ class Mopidy():
 
     def restore_volume(self):
         self.set_volume(self.volume_high)
+
+    def pause(self):
+        if self.is_playing:
+            d = copy(_base_dict)
+            d['method'] = 'core.playback.pause'
+            r = requests.post(self.url, data=json.dumps(d))
+
+    def resume(self):
+        if self.is_playing:
+            d = copy(_base_dict)
+            d['method'] = 'core.playback.resume'
+            r = requests.post(self.url, data=json.dumps(d))
