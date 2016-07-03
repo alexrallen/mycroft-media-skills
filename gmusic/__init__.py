@@ -113,6 +113,20 @@ class GMusic(MediaSkill):
     def handle_pause(self, message):
         self.mopidy.pause()
 
+    def handle_resume(self, message):
+        self.mopidy.resume()
+
+    def lower_volume(self, message):
+        self.mopidy.lower_volume()
+        self.volume_is_low = True
+
+    def restore_volume(self, message):
+        self.volume_is_low = False
+        time.sleep(2)
+        if not self.volume_is_low:
+            logger.info('restoring volume')
+            self.mopidy.restore_volume()
+
     def handle_currently_playing(self, message):
         current_track = self.mopidy.currently_playing()
         if current_track is not None:

@@ -19,6 +19,7 @@ class Spotify(MediaSkill):
     def __init__(self):
         super(Spotify, self).__init__('Spotify')
         self.tracks = None
+        self.volume_is_low = False
 
         url = self.base_conf.get('mopidy_url', None)
         if self.config:
@@ -117,6 +118,20 @@ class Spotify(MediaSkill):
 
     def handle_pause(self, message):
         self.mopidy.pause()
+
+    def handle_resume(self, message):
+        self.mopidy.resume()
+
+    def lower_volume(self, message):
+        self.mopidy.lower_volume()
+        self.volume_is_low = True
+
+    def restore_volume(self, message):
+        self.volume_is_low = False
+        time.sleep(2)
+        if not self.volume_is_low:
+            logger.info('restoring volume')
+            self.mopidy.restore_volume()
 
     def handle_currently_playing(self, message):
         current_track = self.mopidy.currently_playing()
