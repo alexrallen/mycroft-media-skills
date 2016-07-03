@@ -1,6 +1,7 @@
 from media import MediaSkill
 from media import mopidy
 from adapt.intent import IntentBuilder
+from mycroft.messagebus.message import Message
 
 import time
 
@@ -21,20 +22,22 @@ class Spotify(MediaSkill):
         self.tracks = None
         self.volume_is_low = False
 
+    def _connect(self, message):
         url = self.base_conf.get('mopidy_url', None)
         if self.config:
             url = self.config.get('mopidy_url', url)
-        self.mopidy = mopidy.Mopidy(url)
+        try:
+            self.mopidy = mopidy.Mopidy(url)
+        except:
+            logger.info('Could not connect to server, retrying in 10 sec')
+            time.sleep(10)
+            self.emitter.emit(Message(self.name + '.connect'))
+            return
 
         p = self.mopidy.get_playlists('spotify')
         self.playlist = {
             e['name'].split('(by')[0].strip().lower(): e for e in p
         }
-
-    def initialize(self):
-        logger.info('initializing Spotify skill')
-        super(Spotify, self).initialize()
-        self.load_data_files(dirname(__file__))
 
         for p in self.playlist.keys():
             logger.debug("Playlist: " + p)
@@ -53,6 +56,14 @@ class Spotify(MediaSkill):
             .require('NameKeyword')\
             .build()
         self.register_intent(intent, self.handle_play_from)
+
+    def initialize(self):
+        logger.info('initializing Spotify skill')
+        super(Spotify, self).initialize()
+        self.load_data_files(dirname(__file__))
+
+        self.emitter.on(self.name + '.connect', self._connect)
+        self.emitter.emit(Message(self.name + '.connect'))
 
     def play(self):
         super(Spotify, self).play()
