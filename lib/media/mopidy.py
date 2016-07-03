@@ -13,7 +13,7 @@ class Mopidy():
         self.url = url + MOPIDY_API
         self.volume = None
         self.clear_list(force=True)
-        self.volume_low = 10
+        self.volume_low = 3
         self.volume_high = 100
 
     def find_artist(self, artist):
@@ -81,6 +81,7 @@ class Mopidy():
 
     def play(self):
         self.is_playing = True
+        self.restore_volume()
         d = copy(_base_dict)
         d['method'] = 'core.playback.play'
         r = requests.post(self.url, data=json.dumps(d))

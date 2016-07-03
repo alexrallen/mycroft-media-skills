@@ -1,6 +1,7 @@
 from media import MediaSkill
 from media import mopidy
 from adapt.intent import IntentBuilder
+from mycroft.messagebus.message import Message
 
 import time
 
@@ -24,10 +25,17 @@ class GMusic(MediaSkill):
         super(GMusic, self).__init__('GMusic')
         self.tracks = None
 
+    def _connect(self, message):
         url = self.base_conf.get('mopidy_url', None)
         if self.config:
             url = self.config.get('mopidy_url', url)
-        self.mopidy = mopidy.Mopidy(url)
+        try:
+            self.mopidy = mopidy.Mopidy(url)
+        except:
+            logger.info('Could not connect to server, retrying in 10 sec')
+            time.sleep(10)
+            self.emitter.emit(Message(self.name + '.connect'))
+            return
 
         p = self.mopidy.browse('gmusic:album')
         p = {e['name']: e for e in p if e['type'] == 'directory'}
@@ -42,11 +50,6 @@ class GMusic(MediaSkill):
         self.playlist.update(artists)
         self.playlist.update(albums)
         logger.info(self.playlist)
-
-    def initialize(self):
-        logger.info('initializing Google Music skill')
-        super(GMusic, self).initialize()
-        self.load_data_files(dirname(__file__))
 
         for p in self.playlist.keys():
             logger.debug("Playlist: " + p)
@@ -63,6 +66,14 @@ class GMusic(MediaSkill):
             .require('NameKeyword')\
             .build()
         self.register_intent(intent, self.handle_play_playlist)
+
+    def initialize(self):
+        logger.info('initializing Google Music skill')
+        super(GMusic, self).initialize()
+        self.load_data_files(dirname(__file__))
+
+        self.emitter.on(self.name + '.connect', self._connect)
+        self.emitter.emit(Message(self.name + '.connect'))
 
     def play(self):
         super(GMusic, self).play()
@@ -112,6 +123,20 @@ class GMusic(MediaSkill):
 
     def handle_pause(self, message):
         self.mopidy.pause()
+
+    def handle_resume(self, message):
+        self.mopidy.resume()
+
+    def lower_volume(self, message):
+        self.mopidy.lower_volume()
+        self.volume_is_low = True
+
+    def restore_volume(self, message):
+        self.volume_is_low = False
+        time.sleep(2)
+        if not self.volume_is_low:
+            logger.info('restoring volume')
+            self.mopidy.restore_volume()
 
     def handle_currently_playing(self, message):
         current_track = self.mopidy.currently_playing()
