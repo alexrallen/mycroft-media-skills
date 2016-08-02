@@ -19,6 +19,7 @@ yum install bzip2-devel
 yum install openssl-devel
 yum install ncurses-devel
 yum install sqlite-devel
+yum install screen
 
 cd /opt
 wget --no-check-certificate https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz
